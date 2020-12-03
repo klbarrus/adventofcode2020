@@ -6,7 +6,7 @@ use std::io;
 fn main() -> io::Result<()> {
     let lines = aoclib::read_file_lines(&"aoc-01.txt")?;
 
-    let mut lines_int : Vec<u32> = Vec::new();
+    let mut lines_int: Vec<u32> = Vec::new();
     for num in lines.iter() {
         lines_int.push(num.parse::<u32>().unwrap());
     }
@@ -57,4 +57,4 @@ fn main() -> io::Result<()> {
     }
 
     Ok(())
-  }
+}
