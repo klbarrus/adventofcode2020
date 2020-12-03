@@ -1,2 +1,2 @@
 [workspace]
-members = ["aoclib", "aoc-01", "aoc-02"]
+members = ["aoclib", "aoc-01", "aoc-02", "aoc-03"]
