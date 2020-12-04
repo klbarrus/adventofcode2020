@@ -30,39 +30,35 @@ fn parse_passport_1(ppt_str: &str) -> Option<HashMap<&str, &str>> {
 }
 
 fn parse_passport_2(passport: &HashMap<&str, &str>) -> bool {
-  passport.iter().all(|(&k, v)| match k {
-    "byr" => {
-      let year = v.parse().unwrap_or(0);
-      1920 <= year && year <= 2002
-    },
-    "iyr" => {
-      let year = v.parse().unwrap_or(0);
-      2010 <= year && year <= 2020
-    },
-    "eyr" => {
-      let year = v.parse().unwrap_or(0);
-      2020 <= year && year <= 2030
-    },
-    "hgt" => {
-      let height = v[0..(v.len()-2)].parse().unwrap_or(0);
-      match &v[(v.len()-2)..] {
-        "cm" => 150 <= height && height <= 193,
-        "in" => 59 <= height && height <= 76,
-        _ => false
-      }
-    }
-    "hcl" => {
-      v.starts_with('#') && v.len() == 7 && v.chars().skip(1).all(|ch| ch.is_ascii_hexdigit())
-    },
-    "ecl" => {
-      ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].contains(v)
-    },
-    "pid" => {
-      v.len() == 9 && v.chars().all(|ch| ch.is_ascii_digit())
-    },
-    "cid" => true,
-    _ => true,
-  })
+    passport.iter().all(|(&k, v)| match k {
+        "byr" => {
+            let year = v.parse().unwrap_or(0);
+            1920 <= year && year <= 2002
+        }
+        "iyr" => {
+            let year = v.parse().unwrap_or(0);
+            2010 <= year && year <= 2020
+        }
+        "eyr" => {
+            let year = v.parse().unwrap_or(0);
+            2020 <= year && year <= 2030
+        }
+        "hgt" => {
+            let height = v[0..(v.len() - 2)].parse().unwrap_or(0);
+            match &v[(v.len() - 2)..] {
+                "cm" => 150 <= height && height <= 193,
+                "in" => 59 <= height && height <= 76,
+                _ => false,
+            }
+        }
+        "hcl" => {
+            v.starts_with('#') && v.len() == 7 && v.chars().skip(1).all(|ch| ch.is_ascii_hexdigit())
+        }
+        "ecl" => ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].contains(v),
+        "pid" => v.len() == 9 && v.chars().all(|ch| ch.is_ascii_digit()),
+        "cid" => true,
+        _ => true,
+    })
 }
 
 fn main() -> io::Result<()> {
@@ -94,9 +90,9 @@ fn main() -> io::Result<()> {
 
     // extra checking on valid passports
     let valid_passports_2: Vec<_> = valid_passports_1
-    .iter()
-    .filter(|p| parse_passport_2(p))
-    .collect();
+        .iter()
+        .filter(|p| parse_passport_2(p))
+        .collect();
 
     println!("Part 2: {}", valid_passports_2.len());
 
