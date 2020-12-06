@@ -5,6 +5,8 @@ use itertools::Itertools;
 use itertools::MinMaxResult;
 use std::io;
 
+// seat row and column are disguised binary numbers
+// where F/L are 0 and B/R are 1
 fn parse_pass(s: &str) -> (u16, u16, u16) {
     let row: Vec<u16> = s[0..7]
         .chars()
