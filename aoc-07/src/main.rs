@@ -3,10 +3,10 @@
 use aoclib;
 use itertools::Itertools;
 use std::collections::HashMap;
-use std::vec::Vec;
 use std::io;
+use std::vec::Vec;
 
-fn contain_goldbag(bag: &str, data: &HashMap<&str, Vec<(i32, &str)>>) -> bool {
+fn contains_goldbag(bag: &str, allbags: &HashMap<&str, Vec<(i32, &str)>>) -> bool {
     //println!("looking into {}", bag);
     if bag == "shiny gold" {
         return true;
@@ -15,20 +15,38 @@ fn contain_goldbag(bag: &str, data: &HashMap<&str, Vec<(i32, &str)>>) -> bool {
         return false;
     }
 
-    match data.get(bag) {
-        Some(v) => {
-            let mut overall = false;
-            for a in v {
-                let res = contain_goldbag(a.1, data);
-                if res {
-                    overall = true;
+    match allbags.get(bag) {
+        Some(baglist) => {
+            let mut any_goldbag = false;
+            for bag_info in baglist {
+                let has_goldbag = contains_goldbag(bag_info.1, allbags);
+                if has_goldbag {
+                    any_goldbag = true;
                 }
-            };
-            overall
-        },
+            }
+            any_goldbag
+        }
         None => {
             println!("bag {} not present?!", bag);
             false
+        }
+    }
+}
+
+fn count_bags(bag: &str, allbags: &HashMap<&str, Vec<(i32, &str)>>) -> i32 {
+    match allbags.get(bag) {
+        Some(baglist) => {
+            let mut count = 0;
+            for bag_info in baglist {
+                if bag_info.0 != 0 {
+                    count = count + bag_info.0 * (1 + count_bags(bag_info.1, allbags));
+                }
+            }
+            count
+        }
+        None => {
+            println!("bag {} not present?!", bag);
+            0
         }
     }
 }
@@ -65,15 +83,19 @@ fn main() -> io::Result<()> {
         if bag == &"shiny gold" {
             // shiny gold bag doesn't contain itself
         } else {
-            println!("top level {}", bag);
-            if contain_goldbag(bag, &part1_data) {
-                println!("  yes");
+            //println!("top level {}", bag);
+            if contains_goldbag(bag, &part1_data) {
+                //println!("  yes");
                 part1_count = part1_count + 1;
             }
         }
     }
 
     println!("Part 1: {}", part1_count);
+
+    let part2_count = count_bags(&"shiny gold", &part1_data);
+
+    println!("Part 2: {}", part2_count);
 
     Ok(())
 }
