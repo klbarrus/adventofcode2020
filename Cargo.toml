@@ -1,3 +1,3 @@
 [workspace]
 members = ["aoclib", "aoc-01", "aoc-02", "aoc-03", "aoc-04", "aoc-05",
-"aoc-06", "aoc-07"]
+"aoc-06", "aoc-07", "aoc-08"]
